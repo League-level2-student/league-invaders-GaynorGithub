@@ -22,6 +22,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener{
 	boolean movingDown = false;
 	boolean movingLeft = false;
 	boolean movingRight = false;
+	ObjectManager ob = new ObjectManager(rock);
 	
 	public GamePanel() {
 		timer = new Timer(1000/60, this);
@@ -38,17 +39,17 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener{
 	}
 	
 	void updateGameState() {
-		rock.update();
-		if(movingUp) {
+		ob.update();
+		if(movingUp && rock.y > 0) {
 			rock.up();
 		}
-		else if(movingDown) {
+		else if(movingDown && rock.y < LeagueInvaders.HEIGHT - rock.height) {
 			rock.down();
 		}
-		else if(movingLeft) {
+		else if(movingLeft && rock.x > 0) {
 			rock.left();
 		}
-		else if(movingRight) {
+		else if(movingRight && rock.x < LeagueInvaders.WIDTH - rock.width) {
 			rock.right();
 		}
 	}
@@ -73,7 +74,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener{
 	void drawGameState(Graphics g) {
 		g.setColor(Color.BLACK);
 		g.fillRect(0, 0, LeagueInvaders.WIDTH, LeagueInvaders.HEIGHT);
-		rock.draw(g);
+		ob.draw(g);
 		
 		
 	}
