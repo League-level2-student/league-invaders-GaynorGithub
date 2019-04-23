@@ -1,8 +1,10 @@
 import java.awt.Graphics;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.Random;
 
-public class ObjectManager {
+public class ObjectManager implements ActionListener {
 	Rocketship rock;
 	ArrayList<Projectile> projectiles;
 	ArrayList<Alien> aliens;
@@ -60,5 +62,11 @@ public class ObjectManager {
 	void addAlien() {
 		aliens.add(new Alien(rand.nextInt(LeagueInvaders.WIDTH),0,50,50));
 
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		// TODO Auto-generated method stub
+		
 	}
 }

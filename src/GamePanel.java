@@ -11,6 +11,7 @@ import javax.swing.Timer;
 
 public class GamePanel extends JPanel implements ActionListener, KeyListener{
 	Timer timer;
+	Timer alienSpawn;
 	final int MENU_STATE = 0;
 	final int GAME_STATE = 1;
 	final int END_STATE = 2;
@@ -32,6 +33,8 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener{
 	
 	void startGame() {
 		timer.start();
+		alienSpawn = new Timer(1000 , ob);
+	    alienSpawn.start();
 	}
 	
 	void updateMenuState() {
