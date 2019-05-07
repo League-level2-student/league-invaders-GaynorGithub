@@ -5,11 +5,16 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.image.BufferedImage;
 
+import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
 public class GamePanel extends JPanel implements ActionListener, KeyListener{
+	public static BufferedImage image;
+	public static boolean needImage = true;
+	public static boolean gotImage = false;	
 	Timer timer;
 	Timer alienSpawn;
 	final int MENU_STATE = 0;
@@ -27,12 +32,15 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener{
 	
 	public GamePanel() {
 		timer = new Timer(1000/60, this);
+		timer.start();
 		titleFont = new Font("Arial", Font.PLAIN, 48);
 		subFont = new Font("Arial", Font.PLAIN, 24);
+		if (needImage) {
+		    loadImage ("space.png");
+		}
 	}
 	
 	void startGame() {
-		timer.start();
 		alienSpawn = new Timer(1000 , ob);
 	    alienSpawn.start();
 	}
@@ -55,6 +63,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener{
 		else if(movingRight && rock.x < LeagueInvaders.WIDTH - rock.width) {
 			rock.right();
 		}
+		
 	}
 	
 	void updateEndState() {
@@ -75,8 +84,12 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener{
 	}
 	
 	void drawGameState(Graphics g) {
-		g.setColor(Color.BLACK);
-		g.fillRect(0, 0, LeagueInvaders.WIDTH, LeagueInvaders.HEIGHT);
+		if (gotImage) {
+			g.drawImage(image, 0, 0, LeagueInvaders.WIDTH, LeagueInvaders.HEIGHT, null);
+		} else {
+			g.setColor(Color.black);
+			g.fillRect(0, 0, LeagueInvaders.WIDTH, LeagueInvaders.HEIGHT);
+		}
 		ob.draw(g);
 		
 		
@@ -92,6 +105,19 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener{
 		g.drawString("You killed " + "0" + " enemies", 135, 350);
 		g.drawString("Press ENTER to restart", 120, 500);
 	}
+	
+	void loadImage(String imageFile) {
+	    if (needImage) {
+	        try {
+	            image = ImageIO.read(this.getClass().getResourceAsStream(imageFile));
+		    gotImage = true;
+	        } catch (Exception e) {
+	            
+	        }
+	        needImage = false;
+	    }
+	}
+
 	
 	@Override
 
@@ -151,6 +177,9 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener{
 		if(e.getKeyCode() == KeyEvent.VK_RIGHT) {
 			
 			movingRight = true;
+		}
+		if(e.getKeyCode() == KeyEvent.VK_SPACE) {
+			ob.addProjectile(rock.getProjectile());
 		}
 		
 		

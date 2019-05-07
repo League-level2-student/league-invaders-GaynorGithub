@@ -42,6 +42,22 @@ public class ObjectManager implements ActionListener {
 		}
 	}
 	
+	void checkCollision() {
+		for (Alien alien : aliens) {
+			if(rock.collisionBox.intersects(alien.collisionBox)) {
+				rock.isAlive = false;
+				alien.isAlive = false;
+			}
+			for (Projectile projectile : projectiles) {
+				if (projectile.collisionBox.intersects(alien.collisionBox)) {
+					projectile.isAlive = false;
+					alien.isAlive = false;
+				}
+			}
+			
+		}
+	}
+	
 	void purgeObjects() {
 		for (int i = 0; i < aliens.size(); i++) {
 			if(!aliens.get(i).isAlive) {
@@ -67,6 +83,6 @@ public class ObjectManager implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		// TODO Auto-generated method stub
-		
+		addAlien();
 	}
 }
