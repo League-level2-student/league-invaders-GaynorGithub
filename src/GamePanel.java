@@ -30,6 +30,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener{
 	boolean movingRight = false;
 	ObjectManager ob = new ObjectManager(rock);
 	
+	
 	public GamePanel() {
 		timer = new Timer(1000/60, this);
 		timer.start();
@@ -64,6 +65,10 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener{
 			rock.right();
 		}
 		
+		if(!rock.isAlive) {
+			currentState = END_STATE;
+		}
+		
 	}
 	
 	void updateEndState() {
@@ -91,6 +96,9 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener{
 			g.fillRect(0, 0, LeagueInvaders.WIDTH, LeagueInvaders.HEIGHT);
 		}
 		ob.draw(g);
+		g.setColor(Color.WHITE);
+		g.setFont(subFont);
+		g.drawString("Score: " + ob.score, 20, 30);
 		
 		
 	}
@@ -102,7 +110,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener{
 		g.setFont(titleFont);
 		g.drawString("Game Over", 120, 200);
 		g.setFont(subFont);
-		g.drawString("You killed " + "0" + " enemies", 135, 350);
+		g.drawString("You killed " + ob.score + " enemies", 135, 350);
 		g.drawString("Press ENTER to restart", 120, 500);
 	}
 	
@@ -156,7 +164,14 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener{
 		// TODO Auto-generated method stub
 		System.out.println("Key Pressed");
 		if(e.getKeyCode() == KeyEvent.VK_ENTER) {
+			if(currentState == END_STATE) {
+				rock = new Rocketship(250,700,50,50);
+				ob = new ObjectManager(rock);
+			}
 			currentState++;
+			if(currentState == GAME_STATE) {
+				 startGame();
+			}
 		}
 		if(currentState > END_STATE){
             currentState = MENU_STATE;
